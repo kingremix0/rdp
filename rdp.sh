@@ -1,18 +1,12 @@
 # Make Instance Ready for Remote Desktop or RDP
-
 b='\033[1m'
 r='\E[31m'
 g='\E[32m'
 c='\E[36m'
 endc='\E[0m'
 enda='\033[0m'
-
-clear
-
 # Branding
-
 # Used Two if else type statements, one is simple second is complex. So, don't get confused or fear by seeing complex if else statement '^^.
-
 # Creation of user
 printf "\n\nCreating user " >&2
 if sudo useradd -m user &> /dev/null
@@ -22,16 +16,12 @@ else
   printf "\r$r$b Error Occured $endc$enda\n" >&2
   exit
 fi
-
 # Add user to sudo group
 sudo adduser user sudo
-
 # Set password of user to 'root'
 echo 'user:root' | sudo chpasswd
-
 # Change default shell from sh to bash
 sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd
-
 # Initialisation of Installer
 printf "\n\n$c$b    Loading Installer $endc$enda" >&2
 if sudo apt-get update &> /dev/null
@@ -41,7 +31,6 @@ else
     printf "\r$r$b    Error Occured $endc$enda\n" >&2
     exit
 fi
-
 # Installing Chrome Remote Desktop
 printf "\n$g$b    Installing Chrome Remote Desktop $endc$enda" >&2
 {
@@ -51,9 +40,6 @@ printf "\n$g$b    Installing Chrome Remote Desktop $endc$enda" >&2
 } &> /dev/null &&
 printf "\r$c$b    Chrome Remote Desktop Installed $endc$enda\n" >&2 ||
 { printf "\r$r$b    Error Occured $endc$enda\n" >&2; exit; }
-
-
-
 # Install Desktop Environment (XFCE4)
 printf "$g$b    Installing Desktop Environment $endc$enda" >&2
 {
@@ -65,9 +51,6 @@ printf "$g$b    Installing Desktop Environment $endc$enda" >&2
 } &> /dev/null &&
 printf "\r$c$b    Desktop Environment Installed $endc$enda\n" >&2 ||
 { printf "\r$r$b    Error Occured $endc$enda\n" >&2; exit; }
-
-
-
 # Install Google Chrome
 printf "$g$b    Installing Google Chrome $endc$enda" >&2
 {
@@ -77,8 +60,6 @@ printf "$g$b    Installing Google Chrome $endc$enda" >&2
 } &> /dev/null &&
 printf "\r$c$b    Google Chrome Installed $endc$enda\n" >&2 ||
 printf "\r$r$b    Error Occured $endc$enda\n" >&2
-	
-
 # Install OBS-Studio (Livestream)
 printf "$g$b    Installing Obs-studio $endc$enda" >&2
 {
@@ -89,7 +70,6 @@ printf "$g$b    Installing Obs-studio $endc$enda" >&2
 } &> /dev/null &&
 printf "\r$c$b    OBS-Studio Installed $endc$enda\n" >&2 ||
 printf "\r$r$b    Error Occured $endc$enda\n" >&2
-
 # Install VLC Media Player 
 printf "$g$b    Installing VLC Media Player $endc$enda" >&2
 {
@@ -97,7 +77,6 @@ printf "$g$b    Installing VLC Media Player $endc$enda" >&2
 } &> /dev/null &&
 printf "\r$c$b    VLC Media Player Installed $endc$enda\n" >&2 ||
 printf "\r$r$b    Error Occured $endc$enda\n" >&2
-
 # Install other tools like nano
 sudo apt-get install gdebi -y &> /dev/null
 sudo apt-get install vim -y &> /dev/null
@@ -108,21 +87,13 @@ then
 else
     printf "\r$r$b    Error Occured $endc$enda\n" >&2
 fi
-
-
-
 printf "\n$g$b    Installation Completed $endc$enda\n\n" >&2
-
-
-
 # Adding user to CRP group
 sudo adduser user chrome-remote-desktop
-
 # Finishing Work
 printf '\nVisit http://remotedesktop.google.com/headless and Copy the command after authentication\n'
 read -p "Paste Command:DISPLAY= /opt/google/chrome-remote-desktop/start-host --code="4/0AY0e-g4wtQLUyxlKHyLw8kke3C5AHjr74JZurs-_2A6hVd8exbYaaLO75iAuxHNGEXI-Dg" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$(hostname) " CRP
 su - user -c """$CRP"""
-
 printf "\n$c$b I hope everthing done correctly if mistakenly wrote wrong command or pin, Rerun the current box or run command 'su - user -c '<CRP Command Here>' $endc$enda\n" >&2
 printf "\n$c$b https://remotedesktop.google.com/access to access your VM, do not close browser tab to keep colab running ' $endc$enda\n" >&2
 printf "\n$g$b Finished Succesfully$endc$enda"
